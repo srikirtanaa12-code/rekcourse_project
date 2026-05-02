@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekcourse Hub</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="main">
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">Rekcourse Hub</h2>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">ABOUT</a></li>
+                    <li><a href="#">SERVICE</a></li>
+                    <li><a href="#">DESIGN</a></li>
+                    <li><a href="#">CONTACT</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="hero-wrapper">
+            <div class="content">
+                <p class="par">
+                    Course recommendation platform that helps learners find
+                    the best courses based on their goals, with details like
+                    ratings, duration, certification, and free or paid status.
+                    It offers search, user login, and a simple, user-friendly
+                    interface for easy and personalized course discovery.
+                </p>
+                <a href="#" class="cn">JOIN US</a>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="flash-messages" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 400px; text-align: center; z-index: 1000;">
+                  {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" style="padding: 10px; margin-bottom: 10px; border-radius: 5px; background-color: {% if category == 'error' %}#f8d7da{% else %}#d4edda{% endif %}; color: {% if category == 'error' %}#721c24{% else %}#155724{% endif %}; border: 1px solid {% if category == 'error' %}#f5c6cb{% else %}#c3e6cb{% endif %};">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <!-- Login Form -->
+            <form class="form" id="loginForm" action="/login" method="POST">
+                <h2>Login Here</h2>
+                <input type="email" name="email" placeholder="Enter Email Here" required>
+                <input type="password" name="password" placeholder="Enter Password Here" required>
+                <button type="submit" class="btnn">Login</button>
+                <p class="link" style="margin-top: 10px;">
+                    <a href="/forgot_password">Forgot Password?</a>
+                </p>
+                <p class="link">
+                    Don't have an account?<br>
+                    <a href="#" id="showSignup">Sign up here</a>
+                </p>
+               
+            </form>
+
+            <!-- Sign Up Form (hidden by default) -->
+            <form class="Sign" id="signupForm" action="/signup" method="POST">
+                <h2>Sign Up</h2>
+                <input type="text" name="name" placeholder="Enter Name Here" required>
+                <input type="email" name="email" placeholder="Enter Email Here" required>
+                <input type="password" name="password" placeholder="Enter Password Here" required>
+                <button type="submit" class="btnn">Sign Up</button>
+                <p class="link">
+                    Already have an account?<br>
+                    <a href="#" id="showLogin">Login here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
