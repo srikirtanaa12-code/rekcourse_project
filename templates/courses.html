@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,6 +34,7 @@
             font-weight: 800;
             background: linear-gradient(135deg, #7c3aed, #06b6d4);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .nav-right { display: flex; align-items: center; gap: 20px; }
@@ -262,240 +263,62 @@
         <button class="filter-btn" onclick="setFilter('ml', this)">Machine Learning</button>
     </div>
 
-    <!-- Udemy -->
-    <section class="section" id="udemy">
+    
+    {% set platform_details = {
+        'Udemy': {'logo_class': 'udemy-logo', 'logo_text': 'U', 'url': 'https://www.udemy.com'},
+        'Coursera': {'logo_class': 'coursera-logo', 'logo_text': 'C', 'url': 'https://www.coursera.org'},
+        'GeeksforGeeks': {'logo_class': 'gfg-logo', 'logo_text': 'G', 'url': 'https://www.geeksforgeeks.org/courses'},
+        'YouTube': {'logo_class': 'youtube-logo', 'logo_text': '<i class="fab fa-youtube" style="color:white"></i>', 'url': 'https://www.youtube.com'},
+        'NPTEL': {'logo_class': 'nptel-logo', 'logo_text': 'N', 'url': 'https://nptel.ac.in'},
+        'Microsoft Learn': {'logo_style': 'background:#0078D4;', 'logo_text': 'M', 'url': 'https://learn.microsoft.com'}
+    } %}
+
+    {% for platform, platform_courses in courses_by_platform.items() %}
+    {% set details = platform_details.get(platform, {'logo_class': '', 'logo_text': platform[0], 'url': '#'}) %}
+    <section class="section" id="{{ platform|lower|replace(' ', '') }}">
         <div class="section-header">
-            <div class="platform-logo udemy-logo">U</div>
-            <h2>Udemy</h2>
-            <a href="https://www.udemy.com" target="_blank">View All <i class="fas fa-arrow-right"></i></a>
+            <div class="platform-logo {{ details.logo_class }}" {% if details.logo_style %}style="{{ details.logo_style }}"{% endif %}>{{ details.logo_text|safe }}</div>
+            <h2>{{ platform }}</h2>
+            <a href="{{ details.url }}" target="_blank">View All <i class="fas fa-arrow-right"></i></a>
         </div>
+
         <div class="cards-grid">
-            <div class="card" data-tags="web paid cert">
-                <div class="card-img" style="background: linear-gradient(135deg,#1e1b4b,#4c1d95);">🌐</div>
+            {% for course in platform_courses %}
+            <div class="card" data-tags="{{ course.tags }}">
+                <div class="card-img" style="background: {{ course.bg_gradient if course.bg_gradient else 'none' }};">{{ course.icon }}</div>
                 <div class="card-body">
-                    <span class="card-badge badge-paid">Paid</span>
+                    {% if course.badge_type %}
+                        {% if course.badge_type == 'Free' %}
+                        <span class="card-badge badge-free">Free</span>
+                        {% else %}
+                        <span class="card-badge badge-paid">{{ course.badge_type }}</span>
+                        {% endif %}
+                    {% endif %}
+                    
+                    {% if course.has_cert %}
                     <span class="card-badge badge-cert">Certificate</span>
-                    <h3>The Complete Web Developer Bootcamp 2024</h3>
+                    {% endif %}
+                    
+                    <h3>{{ course.title }}</h3>
+                    
+                    {% if course.rating or course.duration or course.views %}
                     <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.8</span>
-                        <span><i class="fas fa-clock"></i> 65 hrs</span>
-                        <span><i class="fas fa-users"></i> 850K</span>
+                        {% if course.rating %}<span><i class="fas fa-star"></i> {{ course.rating }}</span>{% endif %}
+                        {% if course.duration %}<span><i class="fas fa-clock"></i> {{ course.duration }}</span>{% endif %}
+                        {% if course.views %}<span><i class="fas fa-users"></i> {{ course.views }}</span>{% endif %}
                     </div>
-                    <a href="https://www.udemy.com/course/the-complete-web-development-bootcamp/" target="_blank" class="card-link">Enroll Now</a>
+                    {% endif %}
+                    
+                    <a href="{{ course.link }}" target="_blank" class="card-link">
+                        {% if course.badge_type == 'Paid' %}Enroll Now{% else %}Start Learning{% endif %}
+                    </a>
                 </div>
             </div>
-            <div class="card" data-tags="data paid cert">
-                <div class="card-img" style="background: linear-gradient(135deg,#0c4a6e,#0369a1);">📊</div>
-                <div class="card-body">
-                    <span class="card-badge badge-paid">Paid</span>
-                    <span class="card-badge badge-cert">Certificate</span>
-                    <h3>Python for Data Science and Machine Learning Bootcamp</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.7</span>
-                        <span><i class="fas fa-clock"></i> 25 hrs</span>
-                        <span><i class="fas fa-users"></i> 500K</span>
-                    </div>
-                    <a href="https://www.udemy.com/course/python-for-data-science-and-machine-learning-bootcamp/" target="_blank" class="card-link">Enroll Now</a>
-                </div>
-            </div>
-            <div class="card" data-tags="ml paid cert">
-                <div class="card-img" style="background: linear-gradient(135deg,#14532d,#15803d);">🤖</div>
-                <div class="card-body">
-                    <span class="card-badge badge-paid">Paid</span>
-                    <span class="card-badge badge-cert">Certificate</span>
-                    <h3>Machine Learning A-Z™: AI, Python & R</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.6</span>
-                        <span><i class="fas fa-clock"></i> 44 hrs</span>
-                        <span><i class="fas fa-users"></i> 900K</span>
-                    </div>
-                    <a href="https://www.udemy.com/course/machinelearning/" target="_blank" class="card-link">Enroll Now</a>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
-
-    <!-- Coursera -->
-    <section class="section" id="coursera">
-        <div class="section-header">
-            <div class="platform-logo coursera-logo">C</div>
-            <h2>Coursera</h2>
-            <a href="https://www.coursera.org" target="_blank">View All <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="cards-grid">
-            <div class="card" data-tags="ml free cert">
-                <div class="card-img" style="background: linear-gradient(135deg,#1c1917,#44403c);">🧠</div>
-                <div class="card-body">
-                    <span class="card-badge badge-free">Free Audit</span>
-                    <span class="card-badge badge-cert">Certificate</span>
-                    <h3>Machine Learning Specialization — Andrew Ng</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.9</span>
-                        <span><i class="fas fa-clock"></i> 3 months</span>
-                        <span><i class="fas fa-users"></i> 2M+</span>
-                    </div>
-                    <a href="https://www.coursera.org/specializations/machine-learning-introduction" target="_blank" class="card-link">Start Learning</a>
-                </div>
-            </div>
-            <div class="card" data-tags="data free cert">
-                <div class="card-img" style="background: linear-gradient(135deg,#0f172a,#1e3a5f);">📈</div>
-                <div class="card-body">
-                    <span class="card-badge badge-free">Free Audit</span>
-                    <span class="card-badge badge-cert">Certificate</span>
-                    <h3>IBM Data Science Professional Certificate</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.6</span>
-                        <span><i class="fas fa-clock"></i> 5 months</span>
-                        <span><i class="fas fa-users"></i> 700K</span>
-                    </div>
-                    <a href="https://www.coursera.org/professional-certificates/ibm-data-science" target="_blank" class="card-link">Start Learning</a>
-                </div>
-            </div>
-            <div class="card" data-tags="web free cert">
-                <div class="card-img" style="background: linear-gradient(135deg,#1e3a5f,#1e40af);">💻</div>
-                <div class="card-body">
-                    <span class="card-badge badge-free">Free Audit</span>
-                    <span class="card-badge badge-cert">Certificate</span>
-                    <h3>Google IT Support Professional Certificate</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.8</span>
-                        <span><i class="fas fa-clock"></i> 6 months</span>
-                        <span><i class="fas fa-users"></i> 1M+</span>
-                    </div>
-                    <a href="https://www.coursera.org/professional-certificates/google-it-support" target="_blank" class="card-link">Start Learning</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- GeeksforGeeks -->
-    <section class="section" id="gfg">
-        <div class="section-header">
-            <div class="platform-logo gfg-logo">G</div>
-            <h2>GeeksforGeeks</h2>
-            <a href="https://www.geeksforgeeks.org/courses" target="_blank">View All <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="cards-grid">
-            <div class="card" data-tags="data free">
-                <div class="card-img" style="background: linear-gradient(135deg,#052e16,#166534);">🐍</div>
-                <div class="card-body">
-                    <span class="card-badge badge-free">Free</span>
-                    <h3>Python Programming Language — Complete Tutorial</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.7</span>
-                        <span><i class="fas fa-clock"></i> Self-paced</span>
-                        <span><i class="fas fa-users"></i> 1M+</span>
-                    </div>
-                    <a href="https://www.geeksforgeeks.org/python-programming-language/" target="_blank" class="card-link">Start Learning</a>
-                </div>
-            </div>
-            <div class="card" data-tags="web paid cert">
-                <div class="card-img" style="background: linear-gradient(135deg,#1a1a2e,#16213e);">⚙️</div>
-                <div class="card-body">
-                    <span class="card-badge badge-paid">Paid</span>
-                    <span class="card-badge badge-cert">Certificate</span>
-                    <h3>DSA to Development: Full Stack Dev Course</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.8</span>
-                        <span><i class="fas fa-clock"></i> 6 months</span>
-                        <span><i class="fas fa-users"></i> 50K+</span>
-                    </div>
-                    <a href="https://www.geeksforgeeks.org/courses/dsa-to-development-coding-guide" target="_blank" class="card-link">Enroll Now</a>
-                </div>
-            </div>
-            <div class="card" data-tags="ml free">
-                <div class="card-img" style="background: linear-gradient(135deg,#2d1b69,#5b21b6);">🔬</div>
-                <div class="card-body">
-                    <span class="card-badge badge-free">Free</span>
-                    <h3>Machine Learning Tutorial — Complete Guide</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.6</span>
-                        <span><i class="fas fa-clock"></i> Self-paced</span>
-                        <span><i class="fas fa-users"></i> 500K+</span>
-                    </div>
-                    <a href="https://www.geeksforgeeks.org/machine-learning/" target="_blank" class="card-link">Start Learning</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- YouTube -->
-    <section class="section" id="youtube">
-        <div class="section-header">
-            <div class="platform-logo youtube-logo"><i class="fab fa-youtube" style="color:white"></i></div>
-            <h2>YouTube (Free)</h2>
-            <a href="https://www.youtube.com" target="_blank">View All <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="cards-grid">
-            <div class="card" data-tags="web free">
-                <div class="card-img" style="background: linear-gradient(135deg,#450a0a,#991b1b);">🎬</div>
-                <div class="card-body">
-                    <span class="card-badge badge-free">Free</span>
-                    <h3>JavaScript Full Course — Bro Code (12 hrs)</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.9</span>
-                        <span><i class="fas fa-clock"></i> 12 hrs</span>
-                        <span><i class="fas fa-users"></i> 5M+ views</span>
-                    </div>
-                    <a href="https://www.youtube.com/watch?v=lfmg-EJ8gm4" target="_blank" class="card-link">Watch Now</a>
-                </div>
-            </div>
-            <div class="card" data-tags="data ml free">
-                <div class="card-img" style="background: linear-gradient(135deg,#3b0764,#6d28d9);">📉</div>
-                <div class="card-body">
-                    <span class="card-badge badge-free">Free</span>
-                    <h3>Python for Machine Learning & Data Science — freeCodeCamp</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.9</span>
-                        <span><i class="fas fa-clock"></i> 10 hrs</span>
-                        <span><i class="fas fa-users"></i> 3M+ views</span>
-                    </div>
-                    <a href="https://www.youtube.com/watch?v=7eh4d6sabA0" target="_blank" class="card-link">Watch Now</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NPTEL -->
-    <section class="section" id="nptel">
-        <div class="section-header">
-            <div class="platform-logo nptel-logo">N</div>
-            <h2>NPTEL</h2>
-            <a href="https://nptel.ac.in" target="_blank">View All <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="cards-grid">
-            <div class="card" data-tags="ml free cert">
-                <div class="card-img" style="background: linear-gradient(135deg,#431407,#c2410c);">🎓</div>
-                <div class="card-body">
-                    <span class="card-badge badge-free">Free</span>
-                    <span class="card-badge badge-cert">Certificate</span>
-                    <h3>Introduction to Machine Learning — IIT Kharagpur</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.8</span>
-                        <span><i class="fas fa-clock"></i> 12 weeks</span>
-                        <span><i class="fas fa-users"></i> 100K+</span>
-                    </div>
-                    <a href="https://nptel.ac.in/courses/106105152" target="_blank" class="card-link">Enroll Now</a>
-                </div>
-            </div>
-            <div class="card" data-tags="data free cert">
-                <div class="card-img" style="background: linear-gradient(135deg,#172554,#1e3a8a);">📐</div>
-                <div class="card-body">
-                    <span class="card-badge badge-free">Free</span>
-                    <span class="card-badge badge-cert">Certificate</span>
-                    <h3>Programming in Python — IIT Bombay</h3>
-                    <div class="card-meta">
-                        <span class="rating"><i class="fas fa-star"></i> 4.7</span>
-                        <span><i class="fas fa-clock"></i> 8 weeks</span>
-                        <span><i class="fas fa-users"></i> 200K+</span>
-                    </div>
-                    <a href="https://nptel.ac.in/courses/106101183" target="_blank" class="card-link">Enroll Now</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
+    {% endfor %}
+<footer class="footer">
         <p>&copy; 2024 Rekcourse Hub — Your personalized learning companion.</p>
     </footer>
 

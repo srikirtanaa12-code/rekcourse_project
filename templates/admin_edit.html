@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course - Rekcourse Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0f0f1a; color: #e2e8f0; min-height: 100vh; padding: 40px; display: flex; justify-content: center; align-items: center; }
+        .edit-container { max-width: 600px; width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .header h2 { font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, #7c3aed, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-back { color: #94a3b8; text-decoration: none; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+        .btn-back:hover { color: white; }
+        
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #94a3b8; font-size: 0.9rem; font-weight: 500; }
+        input, select { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #e2e8f0; font-size: 1rem; outline: none; transition: border-color 0.3s; }
+        input:focus, select:focus { border-color: #7c3aed; }
+        
+        .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 30px; }
+        .btn-cancel { padding: 12px 24px; background: rgba(255,255,255,0.1); border: none; border-radius: 8px; color: white; text-decoration: none; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-cancel:hover { background: rgba(255,255,255,0.2); }
+        .btn-save { padding: 12px 24px; background: linear-gradient(135deg, #7c3aed, #06b6d4); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        .btn-save:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <div class="header">
+            <h2><i class="fas fa-edit"></i> Edit Course</h2>
+            <a href="/admin/dashboard" class="btn-back"><i class="fas fa-arrow-left"></i> Back</a>
+        </div>
+        
+        <form method="POST" action="/admin/edit/{{ course.id }}">
+            <div class="form-group">
+                <label>Course Title</label>
+                <input type="text" name="title" value="{{ course.title }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Platform</label>
+                <select name="platform" required>
+                    <option value="Udemy" {% if course.platform == 'Udemy' %}selected{% endif %}>Udemy</option>
+                    <option value="Coursera" {% if course.platform == 'Coursera' %}selected{% endif %}>Coursera</option>
+                    <option value="GeeksforGeeks" {% if course.platform == 'GeeksforGeeks' %}selected{% endif %}>GeeksforGeeks</option>
+                    <option value="YouTube" {% if course.platform == 'YouTube' %}selected{% endif %}>YouTube</option>
+                    <option value="NPTEL" {% if course.platform == 'NPTEL' %}selected{% endif %}>NPTEL</option>
+                    <option value="Microsoft Learn" {% if course.platform == 'Microsoft Learn' %}selected{% endif %}>Microsoft Learn</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Course URL</label>
+                <input type="url" name="link" value="{{ course.link }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Tags</label>
+                <input type="text" name="tags" value="{{ course.tags }}" placeholder="e.g., 'web free cert'">
+            </div>
+            
+            <div class="form-actions">
+                <a href="/admin/dashboard" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn-save"><i class="fas fa-save"></i> Save Changes</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
