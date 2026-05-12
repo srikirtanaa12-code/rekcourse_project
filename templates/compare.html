@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Platforms - Rekcourse Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0f0f1a; color: #e2e8f0; min-height: 100vh; }
+
+        .navbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 60px;
+            background: rgba(15,15,26,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo {
+            font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .nav-link {
+            padding: 8px 16px; border-radius: 8px; color: #94a3b8;
+            font-size: 0.88rem; font-weight: 600; text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s;
+        }
+        .nav-link:hover { color: #e2e8f0; border-color: #7c3aed; }
+        .nav-link.active { background: rgba(124,58,237,0.15); color: #a78bfa; border-color: #7c3aed; }
+        .logout-btn {
+            padding: 8px 20px; background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border: none; border-radius: 8px; color: white; font-size: 0.9rem;
+            font-weight: 600; cursor: pointer; text-decoration: none; transition: opacity 0.2s;
+        }
+        .logout-btn:hover { opacity: 0.85; }
+
+        .page-header {
+            text-align: center; padding: 60px 60px 40px;
+        }
+        .page-header h1 {
+            font-size: 2.4rem; font-weight: 800;
+            background: linear-gradient(135deg, #06b6d4, #7c3aed);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .page-header p { color: #94a3b8; }
+
+        .compare-container { padding: 0 60px 60px; overflow-x: auto; }
+
+        /* Summary cards at the top */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .summary-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .summary-card:hover { border-color: rgba(124,58,237,0.4); }
+        .summary-card .platform-name {
+            font-size: 0.85rem; font-weight: 700; color: #94a3b8; margin-bottom: 8px;
+        }
+        .summary-card .course-count {
+            font-size: 2rem; font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #06b6d4);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .summary-card .course-label { font-size: 0.78rem; color: #475569; }
+
+        /* Comparison table */
+        .table-wrapper {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; overflow: hidden;
+        }
+        table { width: 100%; border-collapse: collapse; min-width: 750px; }
+        thead th {
+            background: rgba(124,58,237,0.08);
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            white-space: nowrap;
+        }
+        tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s;
+        }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: rgba(255,255,255,0.02); }
+        tbody td {
+            padding: 16px 20px;
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+
+        .platform-cell { display: flex; align-items: center; gap: 12px; }
+        .platform-icon {
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; font-weight: 800; color: white; flex-shrink: 0;
+        }
+        .platform-icon.udemy     { background: #a435f0; }
+        .platform-icon.coursera  { background: #0056d2; }
+        .platform-icon.geeksforgeeks { background: #2f8d46; }
+        .platform-icon.youtube   { background: #ff0000; }
+        .platform-icon.nptel     { background: #ff6b00; }
+        .platform-icon.microsoft { background: #0078D4; }
+        .platform-name-text { font-weight: 600; font-size: 0.95rem; }
+
+        /* Bar cell for free/paid visual */
+        .bar-container { display: flex; align-items: center; gap: 8px; }
+        .bar-track {
+            flex: 1; height: 8px; background: rgba(255,255,255,0.07);
+            border-radius: 999px; overflow: hidden; max-width: 100px;
+        }
+        .bar-fill { height: 100%; border-radius: 999px; }
+        .bar-green { background: #10b981; }
+        .bar-yellow { background: #f59e0b; }
+        .bar-label { font-size: 0.82rem; color: #94a3b8; }
+
+        /* Stars */
+        .stars { color: #f59e0b; font-size: 0.9rem; }
+        .rating-num { font-size: 0.85rem; color: #94a3b8; margin-left: 4px; }
+
+        /* Badges */
+        .yes-badge {
+            display: inline-block; padding: 3px 10px;
+            background: rgba(16,185,129,0.15); color: #10b981;
+            border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+        }
+        .no-badge {
+            display: inline-block; padding: 3px 10px;
+            background: rgba(100,116,139,0.15); color: #64748b;
+            border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+        }
+
+        /* Legend note */
+        .note {
+            margin-top: 20px; font-size: 0.82rem; color: #475569;
+            text-align: center; padding-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center; padding: 40px; color: #475569;
+            font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        @media (max-width: 768px) {
+            .navbar, .compare-container, .page-header { padding-left: 20px; padding-right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Rekcourse Hub</div>
+        <div class="nav-right">
+            <a href="/courses" class="nav-link">📚 All Courses</a>
+            <a href="/recommendations" class="nav-link">✨ For You</a>
+            <a href="/wishlist" class="nav-link">🔖 Wishlist</a>
+            <a href="/compare" class="nav-link active">⚖️ Compare</a>
+            <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>⚖️ Compare Platforms</h1>
+        <p>Side-by-side breakdown of all platforms — pricing, certificates, ratings, and more.</p>
+    </div>
+
+    <div class="compare-container">
+
+        <!-- Quick summary cards -->
+        <div class="summary-cards">
+            {% for stat in platform_stats %}
+            <div class="summary-card">
+                <div class="platform-name">{{ stat.platform }}</div>
+                <div class="course-count">{{ stat.total_courses }}</div>
+                <div class="course-label">Total Courses</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Detailed comparison table -->
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Platform</th>
+                        <th>Total Courses</th>
+                        <th>Free Courses</th>
+                        <th>Paid Courses</th>
+                        <th>With Certificate</th>
+                        <th>Avg User Rating</th>
+                        <th>User Reviews</th>
+                        <th>Teaching Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat in platform_stats %}
+                    {% set platform_lower = stat.platform|lower|replace(' ', '') %}
+                    <tr>
+                        <!-- Platform name + icon -->
+                        <td>
+                            <div class="platform-cell">
+                                <div class="platform-icon
+                                    {% if 'udemy' in platform_lower %}udemy
+                                    {% elif 'coursera' in platform_lower %}coursera
+                                    {% elif 'geeks' in platform_lower %}geeksforgeeks
+                                    {% elif 'youtube' in platform_lower %}youtube
+                                    {% elif 'nptel' in platform_lower %}nptel
+                                    {% elif 'microsoft' in platform_lower %}microsoft
+                                    {% endif %}">
+                                    {{ stat.platform[0] }}
+                                </div>
+                                <span class="platform-name-text">{{ stat.platform }}</span>
+                            </div>
+                        </td>
+
+                        <!-- Total courses -->
+                        <td><strong>{{ stat.total_courses }}</strong></td>
+
+                        <!-- Free courses with bar -->
+                        <td>
+                            <div class="bar-container">
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-green"
+                                         style="width: {% if stat.total_courses > 0 %}{{ (stat.free_count / stat.total_courses * 100)|int }}%{% else %}0%{% endif %};">
+                                    </div>
+                                </div>
+                                <span class="bar-label">{{ stat.free_count }}</span>
+                            </div>
+                        </td>
+
+                        <!-- Paid courses with bar -->
+                        <td>
+                            <div class="bar-container">
+                                <div class="bar-track">
+                                    <div class="bar-fill bar-yellow"
+                                         style="width: {% if stat.total_courses > 0 %}{{ (stat.paid_count / stat.total_courses * 100)|int }}%{% else %}0%{% endif %};">
+                                    </div>
+                                </div>
+                                <span class="bar-label">{{ stat.paid_count }}</span>
+                            </div>
+                        </td>
+
+                        <!-- Certificate -->
+                        <td>
+                            {% if stat.cert_count > 0 %}
+                            <span class="yes-badge">✓ {{ stat.cert_count }}</span>
+                            {% else %}
+                            <span class="no-badge">None</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Avg rating -->
+                        <td>
+                            {% if stat.avg_rating != 'N/A' and stat.avg_rating %}
+                                <span class="stars">
+                                    {% for i in range(stat.avg_rating|int) %}★{% endfor %}
+                                    {% for i in range(5 - stat.avg_rating|int) %}☆{% endfor %}
+                                </span>
+                                <span class="rating-num">{{ stat.avg_rating }}</span>
+                            {% else %}
+                                <span style="color:#475569; font-size:0.82rem;">No reviews yet</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Review count -->
+                        <td style="color:#94a3b8;">{{ stat.review_count }}</td>
+
+                        <!-- Teaching type (fixed per platform) -->
+                        <td style="font-size:0.82rem; color:#94a3b8;">
+                            {% if 'udemy' in platform_lower %}Video (On-demand)
+                            {% elif 'coursera' in platform_lower %}Video + Assignments
+                            {% elif 'geeks' in platform_lower %}Articles + Practice
+                            {% elif 'youtube' in platform_lower %}Video (Free)
+                            {% elif 'nptel' in platform_lower %}Video + Exam (IIT)
+                            {% elif 'microsoft' in platform_lower %}Docs + Modules
+                            {% else %}Mixed
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="note">* Ratings shown are based on user reviews submitted within Rekcourse Hub.</p>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Rekcourse Hub — Your personalized learning companion.</p>
+    </footer>
+
+</body>
+</html>

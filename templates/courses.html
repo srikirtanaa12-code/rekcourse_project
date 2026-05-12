@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -37,9 +37,23 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .nav-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
         .welcome-text { font-size: 0.95rem; color: #94a3b8; }
         .welcome-text span { color: #7c3aed; font-weight: 600; }
+
+        .nav-link {
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.12);
+            transition: all 0.2s;
+        }
+        .nav-link:hover { color: #e2e8f0; border-color: #7c3aed; }
+        .nav-link.active { background: rgba(124,58,237,0.15); color: #a78bfa; border-color: #7c3aed; }
+
         .logout-btn {
             padding: 8px 20px;
             background: linear-gradient(135deg, #7c3aed, #06b6d4);
@@ -96,6 +110,7 @@
             font-size: 2.8rem;
             font-weight: 800;
             background: linear-gradient(135deg, #a78bfa, #06b6d4);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 12px;
@@ -127,9 +142,7 @@
         }
 
         /* Platform sections */
-        .section {
-            padding: 30px 60px;
-        }
+        .section { padding: 30px 60px; }
         .section-header {
             display: flex;
             align-items: center;
@@ -168,7 +181,6 @@
             border-radius: 16px;
             overflow: hidden;
             transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
-            cursor: pointer;
         }
         .card:hover {
             transform: translateY(-6px);
@@ -182,39 +194,151 @@
             align-items: center;
             justify-content: center;
             font-size: 3rem;
+            position: relative;
         }
-        .card-body { padding: 18px; }
-        .card-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 10px;
+        .card-body {
+            padding: 22px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
-        .badge-free { background: rgba(16,185,129,0.15); color: #10b981; }
-        .badge-paid { background: rgba(245,158,11,0.15); color: #f59e0b; }
-        .badge-cert { background: rgba(99,102,241,0.15); color: #818cf8; }
-
-        .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
-        .card-meta { display: flex; align-items: center; gap: 14px; font-size: 0.82rem; color: #64748b; margin-top: 12px; }
-        .card-meta span { display: flex; align-items: center; gap: 4px; }
-        .rating { color: #f59e0b; }
-        .card-link {
+        .card-platform-label {
             display: block;
-            margin-top: 14px;
-            padding: 9px 16px;
-            background: rgba(124,58,237,0.12);
-            border: 1px solid rgba(124,58,237,0.3);
-            border-radius: 8px;
+            width: auto;
+            padding: 0;
+            background: transparent;
+            border: none;
             color: #a78bfa;
             font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: none;
+            letter-spacing: 0;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+        .card-badge {
+            display: inline-block;
+            padding: 0;
+            border-radius: 0;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            background: transparent;
+            border: none;
+        }
+        .badge-free { color: #10b981; }
+        .badge-paid { color: #f59e0b; }
+        .badge-cert { color: #818cf8; }
+
+        .card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.82rem;
+            color: #64748b;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .card-meta span { display: flex; align-items: center; gap: 6px; }
+
+        /* Card action row – NEW */
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            background: rgba(124,58,237,0.16);
+            border: 1px solid rgba(124,58,237,0.35);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .card-link:hover {
+            background: rgba(124,58,237,0.28);
+        }
+        .save-link {
+            color: #a78bfa;
+            font-size: 0.9rem;
             font-weight: 600;
             text-decoration: none;
-            text-align: center;
-            transition: background 0.2s;
+            transition: color 0.2s;
         }
-        .card-link:hover { background: rgba(124,58,237,0.25); }
+        .save-link:hover {
+            color: #c4b5fd;
+            text-decoration: underline;
+        }
+        .save-link.saved {
+            color: #f87171;
+        }
+
+        /* Department section styling */
+        .dept-section { 
+            padding: 50px 60px; 
+            border-top: 2px solid rgba(124,58,237,0.2);
+        }
+        .dept-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .dept-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+        }
+        .dept-header h2 { 
+            font-size: 2rem; 
+            font-weight: 800;
+            color: #e2e8f0;
+        }
+        .dept-header p {
+            margin-left: auto;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Platform badge in card */
+        .card-platform-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .platform-udemy { background: rgba(164, 53, 240, 0.2); color: #d8b4fe; }
+        .platform-coursera { background: rgba(0, 86, 210, 0.2); color: #93c5fd; }
+        .platform-geeksforgeeks { background: rgba(47, 141, 70, 0.2); color: #86efac; }
+        .platform-youtube { background: rgba(255, 0, 0, 0.2); color: #fca5a5; }
+        .platform-nptel { background: rgba(255, 107, 0, 0.2); color: #fdba74; }
+        .platform-microsoftlearn { background: rgba(0, 120, 212, 0.2); color: #93c5fd; }
 
         /* Footer */
         .footer {
@@ -226,10 +350,10 @@
             margin-top: 40px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .navbar, .section, .search-bar, .filters, .hero { padding-left: 20px; padding-right: 20px; }
             .hero h1 { font-size: 1.8rem; }
+            .nav-right { gap: 8px; }
         }
     </style>
 </head>
@@ -239,6 +363,9 @@
         <div class="logo">Rekcourse Hub</div>
         <div class="nav-right">
             <p class="welcome-text">Welcome, <span>{{ username }}</span>!</p>
+            <a href="/recommendations" class="nav-link">✨ For You</a>
+            <a href="/wishlist" class="nav-link">🔖 Wishlist</a>
+            <a href="/compare" class="nav-link">⚖️ Compare</a>
             <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
     </nav>
@@ -263,7 +390,6 @@
         <button class="filter-btn" onclick="setFilter('ml', this)">Machine Learning</button>
     </div>
 
-    
     {% set platform_details = {
         'Udemy': {'logo_class': 'udemy-logo', 'logo_text': 'U', 'url': 'https://www.udemy.com'},
         'Coursera': {'logo_class': 'coursera-logo', 'logo_text': 'C', 'url': 'https://www.coursera.org'},
@@ -273,20 +399,42 @@
         'Microsoft Learn': {'logo_style': 'background:#0078D4;', 'logo_text': 'M', 'url': 'https://learn.microsoft.com'}
     } %}
 
-    {% for platform, platform_courses in courses_by_platform.items() %}
-    {% set details = platform_details.get(platform, {'logo_class': '', 'logo_text': platform[0], 'url': '#'}) %}
-    <section class="section" id="{{ platform|lower|replace(' ', '') }}">
-        <div class="section-header">
-            <div class="platform-logo {{ details.logo_class }}" {% if details.logo_style %}style="{{ details.logo_style }}"{% endif %}>{{ details.logo_text|safe }}</div>
-            <h2>{{ platform }}</h2>
-            <a href="{{ details.url }}" target="_blank">View All <i class="fas fa-arrow-right"></i></a>
+    {% set dept_icons = {
+        'Web Development': '🌐',
+        'Machine Learning': '🤖',
+        'Data Science': '📊',
+        'Cyber Security': '🛡️',
+        'Business & Management': '📈',
+        'Finance': '💰',
+        'Design': '🎨',
+        'Science': '🧬',
+        'Exam Prep': '🎓',
+        'Cloud Computing': '☁️',
+        'Other': '📚'
+    } %}
+
+    <!-- Department-Based Course Sections -->
+    {% for department, dept_courses in courses_by_department.items() %}
+    {% set dept_slug = dept_slugs.get(department, 'other') %}
+    {% set icon = dept_icons.get(department, '📚') %}
+    <section class="dept-section" id="dept-{{ dept_slug }}">
+        <div class="dept-header">
+            <div class="dept-icon">{{ icon }}</div>
+            <h2>{{ department }}</h2>
+            <p>{{ dept_courses|length }} Course{{ 's' if dept_courses|length != 1 else '' }}</p>
         </div>
 
         <div class="cards-grid">
-            {% for course in platform_courses %}
+            {% for course in dept_courses %}
             <div class="card" data-tags="{{ course.tags }}">
-                <div class="card-img" style="background: {{ course.bg_gradient if course.bg_gradient else 'none' }};">{{ course.icon }}</div>
+                <div class="card-img" style="background: {{ course.bg_gradient if course.bg_gradient else 'none' }};">
+                    {{ course.icon }}
+                    <span class="card-platform-badge platform-{{ course.platform|lower|replace(' ', '') }}">
+                        {{ course.platform[:3] }}
+                    </span>
+                </div>
                 <div class="card-body">
+                    <div class="card-platform-label">{{ course.platform }}</div>
                     {% if course.badge_type %}
                         {% if course.badge_type == 'Free' %}
                         <span class="card-badge badge-free">Free</span>
@@ -294,13 +442,10 @@
                         <span class="card-badge badge-paid">{{ course.badge_type }}</span>
                         {% endif %}
                     {% endif %}
-                    
                     {% if course.has_cert %}
                     <span class="card-badge badge-cert">Certificate</span>
                     {% endif %}
-                    
                     <h3>{{ course.title }}</h3>
-                    
                     {% if course.rating or course.duration or course.views %}
                     <div class="card-meta">
                         {% if course.rating %}<span><i class="fas fa-star"></i> {{ course.rating }}</span>{% endif %}
@@ -308,9 +453,24 @@
                         {% if course.views %}<span><i class="fas fa-users"></i> {{ course.views }}</span>{% endif %}
                     </div>
                     {% endif %}
-                    
-                    <a href="{{ course.link }}" target="_blank" class="card-link">
-                        {% if course.badge_type == 'Paid' %}Enroll Now{% else %}Start Learning{% endif %}
+
+                    <!-- Card actions row: Enroll + Save -->
+                    <div class="card-actions">
+                        <a href="{{ course.link }}" target="_blank" class="card-link">
+                            {% if course.badge_type == 'Paid' %}Enroll Now{% else %}Start Learning{% endif %}
+                        </a>
+                        <a href="#" class="save-link {% if course.in_wishlist %}saved{% endif %}"
+                           onclick="toggleWishlist(this, {{ course.id }}); return false;"
+                           title="{% if course.in_wishlist %}Remove from wishlist{% else %}Save to wishlist{% endif %}">
+                            <i class="fas fa-heart"></i>
+                            {% if course.in_wishlist %}Saved{% else %}Save{% endif %}
+                        </a>
+                    </div>
+
+                    <!-- Reviews link -->
+                    <a href="/course/{{ course.id }}" class="review-link">
+                        <i class="fas fa-star" style="color:#f59e0b; font-size:0.75rem;"></i>
+                        View Details &amp; Reviews
                     </a>
                 </div>
             </div>
@@ -318,7 +478,8 @@
         </div>
     </section>
     {% endfor %}
-<footer class="footer">
+
+    <footer class="footer">
         <p>&copy; 2024 Rekcourse Hub — Your personalized learning companion.</p>
     </footer>
 
@@ -341,6 +502,24 @@
                 const matchSearch = q === '' || text.includes(q);
                 card.style.display = (matchTag && matchSearch) ? 'block' : 'none';
             });
+        }
+
+        // NEW: Wishlist toggle via AJAX
+        function toggleWishlist(btn, courseId) {
+            fetch('/wishlist/toggle/' + courseId, { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.saved) {
+                        btn.classList.add('saved');
+                        btn.innerHTML = '<i class="fas fa-heart"></i> Saved';
+                        btn.title = 'Remove from wishlist';
+                    } else {
+                        btn.classList.remove('saved');
+                        btn.innerHTML = '<i class="fas fa-heart"></i> Save';
+                        btn.title = 'Save to wishlist';
+                    }
+                })
+                .catch(() => alert('Could not update wishlist. Please try again.'));
         }
     </script>
 </body>

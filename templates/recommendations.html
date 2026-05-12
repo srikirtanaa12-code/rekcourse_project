@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations - Rekcourse Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0f0f1a; color: #e2e8f0; min-height: 100vh; }
+
+        /* Navbar (same as courses.html) */
+        .navbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 60px;
+            background: rgba(15,15,26,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo {
+            font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .nav-link {
+            padding: 8px 16px; border-radius: 8px; color: #94a3b8; font-size: 0.88rem;
+            font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.12);
+            transition: all 0.2s;
+        }
+        .nav-link:hover { color: #e2e8f0; border-color: #7c3aed; }
+        .nav-link.active { background: rgba(124,58,237,0.15); color: #a78bfa; border-color: #7c3aed; }
+        .logout-btn {
+            padding: 8px 20px; background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border: none; border-radius: 8px; color: white; font-size: 0.9rem;
+            font-weight: 600; cursor: pointer; text-decoration: none; transition: opacity 0.2s;
+        }
+        .logout-btn:hover { opacity: 0.85; }
+
+        /* Page content */
+        .page-header {
+            text-align: center;
+            padding: 60px 60px 30px;
+        }
+        .page-header h1 {
+            font-size: 2.4rem; font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #06b6d4);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .page-header p { color: #94a3b8; font-size: 1rem; }
+
+        /* Filter form */
+        .filter-form-container {
+            max-width: 700px;
+            margin: 0 auto 50px;
+            padding: 0 60px;
+        }
+        .filter-form {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 30px;
+        }
+        .filter-form h2 { margin-bottom: 20px; font-size: 1.1rem; color: #94a3b8; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 0.85rem; color: #94a3b8; font-weight: 500; }
+        .form-group select {
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .form-group select:focus { border-color: #7c3aed; }
+        .checkbox-row {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 20px;
+        }
+        .checkbox-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: #7c3aed; cursor: pointer; }
+        .checkbox-row label { font-size: 0.9rem; color: #94a3b8; cursor: pointer; }
+        .submit-btn {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border: none; border-radius: 8px;
+            color: white; font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: opacity 0.2s;
+        }
+        .submit-btn:hover { opacity: 0.88; }
+
+        /* Results */
+        .results-section { padding: 0 60px 60px; }
+        .results-heading {
+            font-size: 1.3rem; font-weight: 700;
+            margin-bottom: 24px; color: #a78bfa;
+        }
+        .no-results {
+            text-align: center; padding: 60px;
+            color: #64748b; font-size: 1rem;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(124,58,237,0.2);
+            border-color: rgba(124,58,237,0.4);
+        }
+        .card-img {
+            width: 100%; height: 120px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.8rem;
+        }
+        .card-body { padding: 18px; }
+        .card-badge {
+            display: inline-block; padding: 3px 10px;
+            border-radius: 999px; font-size: 0.75rem; font-weight: 600; margin-bottom: 10px;
+        }
+        .badge-free { background: rgba(16,185,129,0.15); color: #10b981; }
+        .badge-paid { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .badge-cert { background: rgba(99,102,241,0.15); color: #818cf8; }
+        .card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+        .platform-tag {
+            font-size: 0.78rem; color: #64748b; margin-bottom: 10px;
+        }
+        .card-link {
+            display: block; margin-top: 14px; padding: 9px 16px;
+            background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.3);
+            border-radius: 8px; color: #a78bfa;
+            font-size: 0.88rem; font-weight: 600; text-decoration: none;
+            text-align: center; transition: background 0.2s;
+        }
+        .card-link:hover { background: rgba(124,58,237,0.25); }
+
+        .footer {
+            text-align: center; padding: 40px;
+            color: #475569; font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        @media (max-width: 768px) {
+            .navbar, .results-section, .filter-form-container, .page-header { padding-left: 20px; padding-right: 20px; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Rekcourse Hub</div>
+        <div class="nav-right">
+            <a href="/courses" class="nav-link">📚 All Courses</a>
+            <a href="/recommendations" class="nav-link active">✨ For You</a>
+            <a href="/wishlist" class="nav-link">🔖 Wishlist</a>
+            <a href="/compare" class="nav-link">⚖️ Compare</a>
+            <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>✨ Personalized Recommendations</h1>
+        <p>Tell us what you're looking for — we'll find the best courses for you.</p>
+    </div>
+
+    <div class="filter-form-container">
+        <div class="filter-form">
+            <h2><i class="fas fa-sliders-h"></i> &nbsp;Set Your Preferences</h2>
+            <form method="POST" action="/recommendations">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category / Topic</label>
+                        <select name="category" id="category">
+                            <option value="">All Categories</option>
+                            <option value="web"  {% if filters.category == 'web'  %}selected{% endif %}>Web Development</option>
+                            <option value="data" {% if filters.category == 'data' %}selected{% endif %}>Data Science</option>
+                            <option value="ml"   {% if filters.category == 'ml'   %}selected{% endif %}>Machine Learning / AI</option>
+                            <option value="cloud"{% if filters.category == 'cloud'%}selected{% endif %}>Cloud Computing</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="level">Pricing</label>
+                        <select name="level" id="level">
+                            <option value="">Any</option>
+                            <option value="free" {% if filters.level == 'free' %}selected{% endif %}>Free</option>
+                            <option value="paid" {% if filters.level == 'paid' %}selected{% endif %}>Paid</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" name="cert_only" id="cert_only"
+                        {% if filters.cert_only == 'on' %}checked{% endif %}>
+                    <label for="cert_only">🏅 Show only courses with Certificate</label>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-magic"></i> &nbsp;Get Recommendations
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {% if recommended is defined %}
+        <div class="results-section">
+            {% if recommended %}
+                <p class="results-heading">
+                    <i class="fas fa-check-circle"></i>
+                    &nbsp;{{ recommended|length }} course{{ 's' if recommended|length != 1 else '' }} found
+                </p>
+                <div class="cards-grid">
+                    {% for course in recommended %}
+                    <div class="card">
+                        <div class="card-img" style="background: {{ course.bg_gradient if course.bg_gradient else 'none' }};">
+                            {{ course.icon }}
+                        </div>
+                        <div class="card-body">
+                            {% if course.badge_type == 'Free' %}
+                            <span class="card-badge badge-free">Free</span>
+                            {% else %}
+                            <span class="card-badge badge-paid">{{ course.badge_type }}</span>
+                            {% endif %}
+                            {% if course.has_cert %}
+                            <span class="card-badge badge-cert">Certificate</span>
+                            {% endif %}
+                            <p class="platform-tag"><i class="fas fa-university"></i> {{ course.platform }}</p>
+                            <h3>{{ course.title }}</h3>
+                            <a href="{{ course.link }}" target="_blank" class="card-link">
+                                {% if course.badge_type == 'Paid' %}Enroll Now{% else %}Start Learning{% endif %}
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-results">
+                    <i class="fas fa-search" style="font-size:2rem; margin-bottom:12px; display:block; color:#475569;"></i>
+                    No courses found matching your preferences. Try changing your filters!
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <footer class="footer">
+        <p>&copy; 2024 Rekcourse Hub — Your personalized learning companion.</p>
+    </footer>
+
+</body>
+</html>

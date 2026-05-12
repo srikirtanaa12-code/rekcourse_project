@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - Rekcourse Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0f0f1a; color: #e2e8f0; min-height: 100vh; }
+
+        .navbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 60px;
+            background: rgba(15,15,26,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo {
+            font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .nav-link {
+            padding: 8px 16px; border-radius: 8px; color: #94a3b8;
+            font-size: 0.88rem; font-weight: 600; text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s;
+        }
+        .nav-link:hover { color: #e2e8f0; border-color: #7c3aed; }
+        .nav-link.active { background: rgba(124,58,237,0.15); color: #a78bfa; border-color: #7c3aed; }
+        .logout-btn {
+            padding: 8px 20px; background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border: none; border-radius: 8px; color: white; font-size: 0.9rem;
+            font-weight: 600; cursor: pointer; text-decoration: none; transition: opacity 0.2s;
+        }
+        .logout-btn:hover { opacity: 0.85; }
+
+        .page-header {
+            text-align: center; padding: 60px 60px 40px;
+        }
+        .page-header h1 {
+            font-size: 2.4rem; font-weight: 800;
+            background: linear-gradient(135deg, #f87171, #f59e0b);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .page-header p { color: #94a3b8; }
+
+        .wishlist-container { padding: 0 60px 60px; max-width: 1300px; margin: 0 auto; }
+
+        .empty-state {
+            text-align: center; padding: 80px 20px;
+            color: #64748b;
+        }
+        .empty-state i { font-size: 3rem; margin-bottom: 16px; display: block; color: #374151; }
+        .empty-state p { font-size: 1.05rem; margin-bottom: 20px; }
+        .empty-state a {
+            display: inline-block; padding: 12px 28px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border-radius: 8px; color: white; text-decoration: none; font-weight: 600;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 22px;
+        }
+        .card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(239,68,68,0.15);
+            border-color: rgba(239,68,68,0.3);
+        }
+        .card-img {
+            width: 100%; height: 130px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.8rem;
+        }
+        .card-body { padding: 18px; }
+        .card-badge {
+            display: inline-block; padding: 3px 10px;
+            border-radius: 999px; font-size: 0.75rem; font-weight: 600; margin-bottom: 10px;
+        }
+        .badge-free { background: rgba(16,185,129,0.15); color: #10b981; }
+        .badge-paid { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .badge-cert { background: rgba(99,102,241,0.15); color: #818cf8; }
+        .card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; line-height: 1.4; }
+        .platform-tag { font-size: 0.78rem; color: #64748b; margin-bottom: 12px; }
+        .saved-at { font-size: 0.75rem; color: #475569; margin-top: 6px; }
+
+        .card-actions { display: flex; gap: 8px; margin-top: 14px; }
+        .card-link {
+            flex: 1; padding: 9px 12px;
+            background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.3);
+            border-radius: 8px; color: #a78bfa;
+            font-size: 0.85rem; font-weight: 600; text-decoration: none;
+            text-align: center; transition: background 0.2s;
+        }
+        .card-link:hover { background: rgba(124,58,237,0.25); }
+        .remove-btn {
+            padding: 9px 12px;
+            background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 8px; color: #f87171;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            transition: background 0.2s; white-space: nowrap;
+        }
+        .remove-btn:hover { background: rgba(239,68,68,0.2); }
+
+        .footer {
+            text-align: center; padding: 40px; color: #475569;
+            font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        @media (max-width: 768px) {
+            .navbar, .wishlist-container, .page-header { padding-left: 20px; padding-right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Rekcourse Hub</div>
+        <div class="nav-right">
+            <a href="/courses" class="nav-link">📚 All Courses</a>
+            <a href="/recommendations" class="nav-link">✨ For You</a>
+            <a href="/wishlist" class="nav-link active">🔖 Wishlist</a>
+            <a href="/compare" class="nav-link">⚖️ Compare</a>
+            <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>🔖 My Wishlist</h1>
+        <p>Courses you've saved for later — {{ saved_courses|length }} saved</p>
+    </div>
+
+    <div class="wishlist-container">
+        {% if saved_courses %}
+        <div class="cards-grid">
+            {% for course in saved_courses %}
+            <div class="card" id="card-{{ course.id }}">
+                <div class="card-img" style="background: {{ course.bg_gradient if course.bg_gradient else 'none' }};">
+                    {{ course.icon }}
+                </div>
+                <div class="card-body">
+                    {% if course.badge_type == 'Free' %}
+                    <span class="card-badge badge-free">Free</span>
+                    {% else %}
+                    <span class="card-badge badge-paid">{{ course.badge_type }}</span>
+                    {% endif %}
+                    {% if course.has_cert %}
+                    <span class="card-badge badge-cert">Certificate</span>
+                    {% endif %}
+                    <p class="platform-tag"><i class="fas fa-university"></i> {{ course.platform }}</p>
+                    <h3>{{ course.title }}</h3>
+                    <p class="saved-at"><i class="fas fa-clock"></i> Saved on {{ course.saved_at.strftime('%d %b %Y') if course.saved_at else '' }}</p>
+                    <div class="card-actions">
+                        <a href="{{ course.link }}" target="_blank" class="card-link">
+                            {% if course.badge_type == 'Paid' %}Enroll Now{% else %}Start Learning{% endif %}
+                        </a>
+                        <button class="remove-btn" onclick="removeFromWishlist(this, {{ course.id }})">
+                            <i class="fas fa-trash-alt"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-heart-broken"></i>
+            <p>You haven't saved any courses yet.</p>
+            <a href="/courses">Browse Courses</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Rekcourse Hub — Your personalized learning companion.</p>
+    </footer>
+
+    <script>
+        function removeFromWishlist(btn, courseId) {
+            fetch('/wishlist/toggle/' + courseId, { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.saved) {
+                        const card = document.getElementById('card-' + courseId);
+                        card.style.transition = 'opacity 0.3s';
+                        card.style.opacity = '0';
+                        setTimeout(() => card.remove(), 300);
+                    }
+                })
+                .catch(() => alert('Could not remove. Please try again.'));
+        }
+    </script>
+
+</body>
+</html>

@@ -11,17 +11,16 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: -1; /* Place it behind everything */
+    z-index: -1;
 }
 
 .main {
     width: 100%;
     min-height: 100vh;
-    /* Remove the mp4 url and keep just the darkening gradient */
-    background-image: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+    background-image: linear-gradient(to top, rgba(0,0,23,0.7), rgba(0,0,50,0.5));
     background-position: center;
     background-size: cover;
-    position: relative; /* Ensure the content stacks above the fixed video */
+    position: relative;
     z-index: 1;
 }
 
@@ -43,7 +42,7 @@
 }
 
 .logo {
-    color: #F28500;
+    color: #7ec8e3;
     font-size: 24px;
     font-family: Arial, sans-serif;
     padding-left: 20px;
@@ -67,7 +66,7 @@ ul {
 
 ul li a {
     text-decoration: none;
-    color: #fff;
+    color: #7ec8e3;
     font-family: Arial, sans-serif;
     font-weight: bold;
     font-size: 14px;
@@ -75,26 +74,25 @@ ul li a {
 }
 
 ul li a:hover {
-    color: #ff7200;
+    color: #ffffff;
 }
-
-
 
 .btn {
     height: 40px;
     padding: 0 18px;
-    background: #F28500;
-    border: 2px solid #f28500;
+    background: #7ec8e3;
+    border: 2px solid #7ec8e3;
     color: #fff;
     font-size: 15px;
     font-family: Arial, sans-serif;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s, color 0.3s;
 }
 
 .btn:hover {
-    background: #f28500;
+    background: #7ec8e3;
+    color: #fff;
 }
 
 .btn:focus {
@@ -115,7 +113,7 @@ ul li a:hover {
 .content {
     width: 55%;
     padding: 60px 40px 60px 60px;
-    color: #fff;
+    color: #7ec8e3;
 }
 
 .content .par {
@@ -124,15 +122,13 @@ ul li a:hover {
     letter-spacing: 1px;
     line-height: 32px;
     margin-bottom: 35px;
-    color: #ddd;
+    color: #ffffff;
 }
-
-
 
 /* LOGIN FORM */
 .form {
     width: 300px;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 15, 60, 0.85);
     border-radius: 12px;
     padding: 25px;
     margin-left: auto;
@@ -140,11 +136,10 @@ ul li a:hover {
     opacity: 1;
     transition: opacity 0.3s ease, transform 0.3s ease;
     transform: translateX(0);
+    border: 1px solid #7ec8e3;
 }
 
-.form.hidden {
-    display: none;
-}
+.form.hidden { display: none; }
 
 .form.active {
     display: block;
@@ -155,7 +150,7 @@ ul li a:hover {
 .form h2 {
     font-family: Arial, sans-serif;
     text-align: center;
-    color: #f28500;
+    color: #043749;
     font-size: 22px;
     background-color: #fff;
     border-radius: 10px;
@@ -168,8 +163,8 @@ ul li a:hover {
     height: 38px;
     background: transparent;
     border: none;
-    border-bottom: 1px solid #f28500;
-    color: #fff;
+    border-bottom: 1px solid #7ec8e3;
+    color: #7ec8e3;
     font-size: 14px;
     letter-spacing: 1px;
     margin-top: 25px;
@@ -177,39 +172,31 @@ ul li a:hover {
     padding: 5px 0;
 }
 
-.form input:focus {
-    outline: none;
-}
-
-.form input::placeholder {
-    color: #ccc;
-}
+.form input:focus { outline: none; }
+.form input::placeholder { color: #a8d8ea; }
 
 .form .link {
     font-family: Arial, sans-serif;
     font-size: 14px;
     padding-top: 16px;
     text-align: center;
-    color: #fff;
+    color: #a8d8ea;
     line-height: 1.8;
 }
 
 .form .link a {
     text-decoration: none;
-    color: #f28500;
+    color: #7ec8e3;
     font-weight: bold;
     transition: color 0.3s ease;
 }
 
-.form .link a:hover {
-    color: #fff;
-}
-
+.form .link a:hover { color: #fff; }
 
 /* SIGN UP FORM */
 .Sign {
     width: 300px;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 15, 60, 0.85);
     border-radius: 12px;
     padding: 25px;
     margin-left: auto;
@@ -218,11 +205,10 @@ ul li a:hover {
     opacity: 1;
     transition: opacity 0.3s ease, transform 0.3s ease;
     transform: translateX(0);
+    border: 1px solid #7ec8e3;
 }
 
-.Sign.hidden {
-    display: none;
-}
+.Sign.hidden { display: none; }
 
 .Sign.active {
     display: block;
@@ -233,7 +219,7 @@ ul li a:hover {
 .Sign h2 {
     font-family: Arial, sans-serif;
     text-align: center;
-    color: #f28500;
+    color: #7ec8e3;
     font-size: 22px;
     background-color: #fff;
     border-radius: 10px;
@@ -246,8 +232,8 @@ ul li a:hover {
     height: 38px;
     background: transparent;
     border: none;
-    border-bottom: 1px solid #f28500;
-    color: #fff;
+    border-bottom: 1px solid #7ec8e3;
+    color: #7ec8e3;
     font-size: 14px;
     letter-spacing: 1px;
     margin-top: 25px;
@@ -255,45 +241,38 @@ ul li a:hover {
     padding: 5px 0;
 }
 
-.Sign input:focus {
-    outline: none;
-}
-
-.Sign input::placeholder {
-    color: #ccc;
-}
+.Sign input:focus { outline: none; }
+.Sign input::placeholder { color: #a8d8ea; }
 
 .Sign .link {
     font-family: Arial, sans-serif;
     font-size: 14px;
     padding-top: 16px;
     text-align: center;
-    color: #fff;
+    color: #a8d8ea;
     line-height: 1.8;
 }
 
 .Sign .link a {
     text-decoration: none;
-    color: #f28500;
+    color: #7ec8e3;
     font-weight: bold;
     transition: color 0.3s ease;
 }
 
-.Sign .link a:hover {
-    color: #fff;
-}
+.Sign .link a:hover { color: #fff; }
 
 /* SHARED BUTTON */
 .btnn {
     width: 100%;
     height: 42px;
-    background: #ff7200;
-    border: none;
+    background: #7ec8e3;
+    border: 2px solid #7ec8e3;
     margin-top: 28px;
     font-size: 17px;
     border-radius: 10px;
     cursor: pointer;
-    color: #fff;
+    color: #033d5b;
     font-family: Arial, sans-serif;
     font-weight: bold;
     transition: background 0.4s ease, color 0.4s ease;
@@ -301,24 +280,24 @@ ul li a:hover {
 
 .btnn:hover {
     background: #fff;
-    color: #ff7200;
+    color: #7ec8e3;
 }
 
 /* ADMIN LOGIN BUTTON */
 .admin-btn {
     display: inline-block;
     padding: 8px 16px;
-    background: linear-gradient(135deg, #F28500, #F28500);
+    background: linear-gradient(135deg, #7ec8e3, #7ec8e3);
     color: #fff !important;
     border-radius: 5px;
     font-weight: bold;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(255, 114, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(126, 200, 227, 0.3);
 }
 
 .admin-btn:hover {
-    background: linear-gradient(135deg, #e55100, #ff7200);
+    background: linear-gradient(135deg, #5ab8d8, #7ec8e3);
     color: #fff !important;
-    box-shadow: 0 6px 12px rgba(255, 114, 0, 0.5);
+    box-shadow: 0 6px 12px rgba(126, 200, 227, 0.5);
     transform: translateY(-2px);
 }

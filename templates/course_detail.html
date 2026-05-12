@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }} - Rekcourse Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0f0f1a; color: #e2e8f0; min-height: 100vh; }
+
+        .navbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 60px;
+            background: rgba(15,15,26,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo {
+            font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .nav-link {
+            padding: 8px 16px; border-radius: 8px; color: #94a3b8;
+            font-size: 0.88rem; font-weight: 600; text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s;
+        }
+        .nav-link:hover { color: #e2e8f0; border-color: #7c3aed; }
+        .logout-btn {
+            padding: 8px 20px; background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border: none; border-radius: 8px; color: white; font-size: 0.9rem;
+            font-weight: 600; cursor: pointer; text-decoration: none; transition: opacity 0.2s;
+        }
+        .logout-btn:hover { opacity: 0.85; }
+
+        /* Main layout */
+        .detail-container {
+            max-width: 900px; margin: 50px auto; padding: 0 60px 80px;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #64748b; text-decoration: none; font-size: 0.88rem;
+            margin-bottom: 30px; transition: color 0.2s;
+        }
+        .back-link:hover { color: #94a3b8; }
+
+        /* Course hero card */
+        .course-hero {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px; overflow: hidden;
+            margin-bottom: 40px;
+        }
+        .course-banner {
+            width: 100%; height: 200px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 5rem;
+        }
+        .course-info { padding: 28px 30px; }
+        .badge-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+        .card-badge {
+            display: inline-block; padding: 4px 12px;
+            border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+        }
+        .badge-free { background: rgba(16,185,129,0.15); color: #10b981; }
+        .badge-paid { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .badge-cert { background: rgba(99,102,241,0.15); color: #818cf8; }
+        .badge-platform { background: rgba(6,182,212,0.12); color: #06b6d4; }
+
+        .course-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 14px; line-height: 1.3; }
+
+        .rating-summary {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+        }
+        .big-rating {
+            font-size: 2.2rem; font-weight: 800;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .stars-row { font-size: 1.2rem; color: #f59e0b; }
+        .review-count-text { font-size: 0.85rem; color: #64748b; }
+
+        .meta-row {
+            display: flex; gap: 20px; flex-wrap: wrap;
+            font-size: 0.85rem; color: #64748b; margin-bottom: 24px;
+        }
+        .meta-row span { display: flex; align-items: center; gap: 6px; }
+
+        .action-row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .enroll-btn {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border: none; border-radius: 10px; color: white;
+            font-size: 1rem; font-weight: 700; text-decoration: none;
+            transition: opacity 0.2s; display: inline-block;
+        }
+        .enroll-btn:hover { opacity: 0.85; }
+        .wishlist-toggle-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px; color: #94a3b8;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .wishlist-toggle-btn.saved {
+            background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.4); color: #f87171;
+        }
+        .wishlist-toggle-btn:hover { border-color: #7c3aed; color: #a78bfa; }
+
+        /* Review section */
+        .section-title {
+            font-size: 1.3rem; font-weight: 700; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        /* Review form */
+        .review-form-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 24px; margin-bottom: 30px;
+        }
+        .review-form-box h3 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: #94a3b8; }
+        .star-picker { display: flex; gap: 6px; margin-bottom: 16px; }
+        .star-picker input[type="radio"] { display: none; }
+        .star-picker label {
+            font-size: 1.8rem; cursor: pointer; color: #334155;
+            transition: color 0.15s;
+        }
+        .star-picker input[type="radio"]:checked ~ label,
+        .star-picker label:hover,
+        .star-picker label:hover ~ label { color: #f59e0b; }
+
+        /* RTL trick so hover highlights all preceding stars */
+        .star-picker { flex-direction: row-reverse; }
+        .star-picker label:hover,
+        .star-picker label:hover ~ label { color: #f59e0b; }
+
+        .review-textarea {
+            width: 100%; min-height: 100px; padding: 14px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+            color: #e2e8f0; font-size: 0.95rem; font-family: 'Inter', sans-serif;
+            resize: vertical; outline: none; margin-bottom: 14px;
+        }
+        .review-textarea:focus { border-color: #7c3aed; }
+        .submit-review-btn {
+            padding: 11px 28px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border: none; border-radius: 8px; color: white;
+            font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s;
+        }
+        .submit-review-btn:hover { opacity: 0.88; }
+
+        /* Flash messages */
+        .flash {
+            padding: 12px 18px; border-radius: 8px; margin-bottom: 16px; font-size: 0.9rem;
+        }
+        .flash.success { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.25); }
+        .flash.error   { background: rgba(239,68,68,0.12);  color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+
+        /* Reviews list */
+        .reviews-list { display: flex; flex-direction: column; gap: 16px; }
+        .review-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px; padding: 18px 20px;
+        }
+        .review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+        .reviewer-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9rem;
+        }
+        .reviewer-name { font-weight: 600; font-size: 0.95rem; }
+        .review-stars { color: #f59e0b; font-size: 0.9rem; }
+        .review-date { font-size: 0.78rem; color: #475569; margin-left: auto; }
+        .review-text { font-size: 0.9rem; color: #94a3b8; line-height: 1.6; }
+
+        .no-reviews { text-align: center; color: #475569; padding: 40px; }
+
+        .footer {
+            text-align: center; padding: 40px; color: #475569;
+            font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        @media (max-width: 768px) {
+            .navbar, .detail-container { padding-left: 20px; padding-right: 20px; }
+            .course-title { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Rekcourse Hub</div>
+        <div class="nav-right">
+            <a href="/courses" class="nav-link">📚 All Courses</a>
+            <a href="/recommendations" class="nav-link">✨ For You</a>
+            <a href="/wishlist" class="nav-link">🔖 Wishlist</a>
+            <a href="/compare" class="nav-link">⚖️ Compare</a>
+            <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="detail-container">
+
+        <a href="/courses" class="back-link"><i class="fas fa-arrow-left"></i> Back to Courses</a>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- Course hero -->
+        <div class="course-hero">
+            <div class="course-banner" style="background: {{ course.bg_gradient if course.bg_gradient else 'linear-gradient(135deg,#1e1b4b,#4c1d95)' }};">
+                {{ course.icon }}
+            </div>
+            <div class="course-info">
+                <div class="badge-row">
+                    {% if course.badge_type == 'Free' %}
+                    <span class="card-badge badge-free">Free</span>
+                    {% else %}
+                    <span class="card-badge badge-paid">{{ course.badge_type }}</span>
+                    {% endif %}
+                    {% if course.has_cert %}
+                    <span class="card-badge badge-cert">🏅 Certificate</span>
+                    {% endif %}
+                    <span class="card-badge badge-platform">{{ course.platform }}</span>
+                </div>
+
+                <h1 class="course-title">{{ course.title }}</h1>
+
+                <div class="rating-summary">
+                    <span class="big-rating">{{ avg_rating if avg_rating else '—' }}</span>
+                    <div>
+                        <div class="stars-row">
+                            {% if avg_rating %}
+                                {% for i in range(avg_rating|int) %}★{% endfor %}
+                                {% for i in range(5 - avg_rating|int) %}☆{% endfor %}
+                            {% else %}
+                                ☆☆☆☆☆
+                            {% endif %}
+                        </div>
+                        <div class="review-count-text">{{ reviews|length }} review{{ 's' if reviews|length != 1 else '' }}</div>
+                    </div>
+                </div>
+
+                {% if course.duration or course.views %}
+                <div class="meta-row">
+                    {% if course.duration %}<span><i class="fas fa-clock"></i> {{ course.duration }}</span>{% endif %}
+                    {% if course.views %}<span><i class="fas fa-users"></i> {{ course.views }}</span>{% endif %}
+                </div>
+                {% endif %}
+
+                <div class="action-row">
+                    <a href="{{ course.link }}" target="_blank" class="enroll-btn">
+                        {% if course.badge_type == 'Paid' %}
+                            <i class="fas fa-shopping-cart"></i> Enroll Now
+                        {% else %}
+                            <i class="fas fa-play"></i> Start Learning
+                        {% endif %}
+                    </a>
+                    <button
+                        id="wishlistBtn"
+                        class="wishlist-toggle-btn {% if in_wishlist %}saved{% endif %}"
+                        onclick="toggleWishlist({{ course.id }})">
+                        <i class="fas fa-heart"></i>
+                        {% if in_wishlist %}Saved to Wishlist{% else %}Save to Wishlist{% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Reviews Section ── -->
+        <p class="section-title"><i class="fas fa-star" style="color:#f59e0b;"></i> Reviews & Ratings</p>
+
+        <!-- Add review form -->
+        {% if user_reviewed %}
+            <div class="review-form-box">
+                <h3><i class="fas fa-check-circle" style="color:#10b981;"></i> You have already reviewed this course. Thank you!</h3>
+            </div>
+        {% else %}
+            <div class="review-form-box">
+                <h3>Write a Review</h3>
+                <form method="POST" action="/review/add/{{ course.id }}">
+                    <!-- Star rating picker -->
+                    <div class="star-picker">
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5" title="5 stars">★</label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4" title="4 stars">★</label>
+                        <input type="radio" id="star3" name="rating" value="3" checked>
+                        <label for="star3" title="3 stars">★</label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2" title="2 stars">★</label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1" title="1 star">★</label>
+                    </div>
+                    <textarea name="review_text" class="review-textarea"
+                        placeholder="Share your experience with this course (optional)..."></textarea>
+                    <button type="submit" class="submit-review-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Review
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+
+        <!-- Reviews list -->
+        {% if reviews %}
+            <div class="reviews-list">
+                {% for review in reviews %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar">{{ review.user_name[0]|upper }}</div>
+                        <span class="reviewer-name">{{ review.user_name }}</span>
+                        <span class="review-stars">
+                            {% for i in range(review.rating) %}★{% endfor %}
+                            {% for i in range(5 - review.rating) %}☆{% endfor %}
+                        </span>
+                        <span class="review-date">{{ review.created_at.strftime('%d %b %Y') if review.created_at else '' }}</span>
+                    </div>
+                    {% if review.review_text %}
+                    <p class="review-text">{{ review.review_text }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-reviews">
+                <i class="fas fa-comment-slash" style="font-size:2rem; margin-bottom:10px; display:block; color:#334155;"></i>
+                No reviews yet. Be the first to review this course!
+            </div>
+        {% endif %}
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Rekcourse Hub — Your personalized learning companion.</p>
+    </footer>
+
+    <script>
+        function toggleWishlist(courseId) {
+            const btn = document.getElementById('wishlistBtn');
+            fetch('/wishlist/toggle/' + courseId, { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.saved) {
+                        btn.classList.add('saved');
+                        btn.innerHTML = '<i class="fas fa-heart"></i> Saved to Wishlist';
+                    } else {
+                        btn.classList.remove('saved');
+                        btn.innerHTML = '<i class="fas fa-heart"></i> Save to Wishlist';
+                    }
+                })
+                .catch(() => alert('Could not update wishlist. Please try again.'));
+        }
+    </script>
+
+</body>
+</html>
