@@ -172,8 +172,8 @@
         /* Cards grid */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
         }
         .card {
             background: rgba(255,255,255,0.04);
@@ -189,18 +189,19 @@
         }
         .card-img {
             width: 100%;
-            height: 150px;
+            height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3rem;
             position: relative;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4) !important;
         }
         .card-body {
-            padding: 22px 20px 20px;
+            padding: 14px 14px 12px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 6px;
         }
         .card-platform-label {
             display: block;
@@ -209,20 +210,20 @@
             background: transparent;
             border: none;
             color: #a78bfa;
-            font-size: 0.88rem;
-            font-weight: 700;
+            font-size: 0.8rem;
+            font-weight: 600;
             text-transform: none;
             letter-spacing: 0;
-            margin-bottom: 6px;
+            margin-bottom: 2px;
             text-align: left;
         }
         .card-badge {
             display: inline-block;
             padding: 0;
             border-radius: 0;
-            font-size: 0.82rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 2px;
             background: transparent;
             border: none;
         }
@@ -231,40 +232,40 @@
         .badge-cert { color: #818cf8; }
 
         .card h3 {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            line-height: 1.45;
+            margin-bottom: 6px;
+            line-height: 1.3;
         }
         .card-meta {
             display: flex;
             align-items: center;
-            gap: 14px;
-            font-size: 0.82rem;
+            gap: 10px;
+            font-size: 0.75rem;
             color: #64748b;
             margin-top: 0;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
         .card-meta span { display: flex; align-items: center; gap: 6px; }
 
         /* Card action row – NEW */
         .card-actions {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
-            margin-top: 14px;
+            margin-top: 8px;
             flex-wrap: wrap;
         }
         .card-link {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 10px 16px;
+            padding: 8px 14px;
             background: rgba(124,58,237,0.16);
             border: 1px solid rgba(124,58,237,0.35);
-            border-radius: 10px;
+            border-radius: 8px;
             color: #e2e8f0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             text-decoration: none;
             transition: background 0.2s, color 0.2s;
@@ -274,7 +275,7 @@
         }
         .save-link {
             color: #a78bfa;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             text-decoration: none;
             transition: color 0.2s;
@@ -285,6 +286,18 @@
         }
         .save-link.saved {
             color: #f87171;
+        }
+        .review-link {
+            display: block;
+            color: #a78bfa;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 4px;
+            transition: color 0.2s;
+        }
+        .review-link:hover {
+            color: #c4b5fd;
         }
 
         /* Department section styling */
@@ -320,18 +333,8 @@
             font-size: 0.9rem;
         }
 
-        /* Platform badge in card */
         .card-platform-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            display: none !important;
         }
         .platform-udemy { background: rgba(164, 53, 240, 0.2); color: #d8b4fe; }
         .platform-coursera { background: rgba(0, 86, 210, 0.2); color: #93c5fd; }
@@ -342,12 +345,68 @@
 
         /* Footer */
         .footer {
-            text-align: center;
-            padding: 40px;
-            color: #475569;
-            font-size: 0.85rem;
-            border-top: 1px solid rgba(255,255,255,0.06);
+            width: 100%;
+            padding: 60px 40px 40px;
             margin-top: 40px;
+            background: rgba(2, 18, 40, 0.96);
+            border-top: 1px solid rgba(124, 58, 237, 0.18);
+            color: #cbd5e1;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1.7fr 3.3fr;
+            gap: 32px;
+        }
+
+        .footer-brand h3 {
+            margin-bottom: 16px;
+            color: #7c3aed;
+            font-size: 1.4rem;
+        }
+
+        .footer-brand p {
+            line-height: 1.8;
+            color: #94a3b8;
+            max-width: 420px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(180px, 1fr));
+            gap: 24px;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            color: #ffffff;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .footer-links a {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #a8d8ea;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 980px) {
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+            .footer-links {
+                grid-template-columns: repeat(2, minmax(180px, 1fr));
+            }
         }
 
         @media (max-width: 768px) {
@@ -382,12 +441,12 @@
 
     <div class="filters">
         <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-        <button class="filter-btn" onclick="setFilter('free', this)">Free</button>
-        <button class="filter-btn" onclick="setFilter('paid', this)">Paid</button>
-        <button class="filter-btn" onclick="setFilter('cert', this)">Certificate</button>
-        <button class="filter-btn" onclick="setFilter('web', this)">Web Dev</button>
-        <button class="filter-btn" onclick="setFilter('data', this)">Data Science</button>
-        <button class="filter-btn" onclick="setFilter('ml', this)">Machine Learning</button>
+        <button class="filter-btn" onclick="setFilter('Udemy', this)">Udemy</button>
+        <button class="filter-btn" onclick="setFilter('YouTube', this)">YouTube</button>
+        <button class="filter-btn" onclick="setFilter('GeeksforGeeks', this)">GeeksforGeeks</button>
+        <button class="filter-btn" onclick="setFilter('Coursera', this)">Coursera</button>
+        <button class="filter-btn" onclick="setFilter('NPTEL', this)">NPTEL</button>
+        <button class="filter-btn" onclick="setFilter('Microsoft Learn', this)">Microsoft Learn</button>
     </div>
 
     {% set platform_details = {
@@ -426,12 +485,9 @@
 
         <div class="cards-grid">
             {% for course in dept_courses %}
-            <div class="card" data-tags="{{ course.tags }}">
-                <div class="card-img" style="background: {{ course.bg_gradient if course.bg_gradient else 'none' }};">
+            <div class="card" data-tags="{{ course.tags }}" data-platform="{{ course.platform }}">
+                <div class="card-img" style="background: {{ course.bg_gradient if course.bg_gradient else 'linear-gradient(135deg, #7c3aed, #06b6d4)' }};">
                     {{ course.icon }}
-                    <span class="card-platform-badge platform-{{ course.platform|lower|replace(' ', '') }}">
-                        {{ course.platform[:3] }}
-                    </span>
                 </div>
                 <div class="card-body">
                     <div class="card-platform-label">{{ course.platform }}</div>
@@ -480,7 +536,53 @@
     {% endfor %}
 
     <footer class="footer">
-        <p>&copy; 2024 Rekcourse Hub — Your personalized learning companion.</p>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <h3>Rekcourse Hub</h3>
+                <p>Find trusted, expert-led courses from top providers and universities—all in one place.</p>
+            </div>
+            <div class="footer-links">
+                <div>
+                    <h4>Browse by Provider</h4>
+                    <a href="https://www.coursera.org" target="_blank">Coursera</a>
+                    <a href="https://www.udacity.com" target="_blank">Udacity</a>
+                    <a href="https://www.edx.org" target="_blank">edX</a>
+                    <a href="https://www.simplilearn.com" target="_blank">Simplilearn</a>
+                    <a href="https://codesignal.com" target="_blank">CodeSignal</a>
+                    <a href="https://www.boot.dev" target="_blank">Boot.dev</a>
+                </div>
+                <div>
+                    <h4>Browse by University</h4>
+                    <a href="https://study.iitm.ac.in" target="_blank">IIT Madras</a>
+                    <a href="https://pll.harvard.edu/catalog/free" target="_blank">Harvard</a>
+                    <a href="https://ocw.mit.edu" target="_blank">MIT</a>
+                    <a href="https://www.edx.org/school/gtx" target="_blank">Georgia Tech</a>
+                    <a href="https://online.umich.edu" target="_blank">University of Michigan</a>
+                    <a href="https://www.purdue.edu/online" target="_blank">Purdue University</a>
+                    <a href="https://online.duke.edu" target="_blank">Duke University</a>
+                </div>
+                <div>
+                    <h4>Browse by Institution</h4>
+                    <a href="https://grow.google" target="_blank">Google</a>
+                    <a href="https://learn.microsoft.com" target="_blank">Microsoft</a>
+                    <a href="https://skillsbuild.org" target="_blank">IBM</a>
+                    <a href="https://www.aws.training" target="_blank">Amazon</a>
+                    <a href="https://training.linuxfoundation.org" target="_blank">Linux Foundation</a>
+                    <a href="https://learnenglish.britishcouncil.org" target="_blank">British Council</a>
+                    <a href="https://trailhead.salesforce.com" target="_blank">Salesforce</a>
+                </div>
+                <div>
+                    <h4>Rankings</h4>
+                    <a href="https://www.classcentral.com/report/best-online-courses/" target="_blank">Best Online Courses of All Time</a>
+                    <a href="https://www.classcentral.com/report/best-online-courses-year/" target="_blank">Best Online Courses of the Year</a>
+                    <a href="https://www.classcentral.com/report/most-popular-online-courses/" target="_blank">Most Popular Courses of All Time</a>
+                    <a href="https://www.classcentral.com/report/most-popular-courses/" target="_blank">Most Popular Courses of the Year</a>
+                    <a href="https://www.classcentral.com/report/coursera-free-online-courses/" target="_blank">100 Top FREE Coursera Courses</a>
+                    <a href="https://www.classcentral.com/guides" target="_blank">Best Courses Guides</a>
+                    <a href="https://www.classcentral.com/report/free-printable-study-calendar/" target="_blank">Free Printable Study Calendar</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -496,11 +598,11 @@
         function filterCourses() {
             const q = document.getElementById('searchInput').value.toLowerCase();
             document.querySelectorAll('.card').forEach(card => {
-                const tags = card.getAttribute('data-tags') || '';
+                const platform = card.getAttribute('data-platform') || '';
                 const text = card.innerText.toLowerCase();
-                const matchTag = activeFilter === 'all' || tags.includes(activeFilter);
+                const matchPlatform = activeFilter === 'all' || platform === activeFilter;
                 const matchSearch = q === '' || text.includes(q);
-                card.style.display = (matchTag && matchSearch) ? 'block' : 'none';
+                card.style.display = (matchPlatform && matchSearch) ? 'block' : 'none';
             });
         }
 

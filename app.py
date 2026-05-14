@@ -235,10 +235,14 @@ def get_department_from_tags(tags):
         return 'Cyber Security'
     elif 'business' in tags_lower or 'management' in tags_lower:
         return 'Business & Management'
-    elif 'finance' in tags_lower:
+    elif 'finance' in tags_lower or 'financial' in tags_lower:
         return 'Finance'
-    elif 'design' in tags_lower:
+    elif 'design' in tags_lower or 'ux' in tags_lower or 'ui' in tags_lower:
         return 'Design'
+    elif 'psychology' in tags_lower or 'psycholog' in tags_lower:
+        return 'Psychology'
+    elif 'it support' in tags_lower or 'it professional' in tags_lower:
+        return 'IT'
     elif 'science' in tags_lower:
         return 'Science'
     elif 'exam' in tags_lower:
@@ -332,8 +336,8 @@ def recommendations():
         conditions = []
         params = []
         if category:
-            conditions.append("tags LIKE %s")
-            params.append(f"%{category}%")
+            conditions.append("platform = %s")
+            params.append(category)
         if level:
             conditions.append("badge_type = %s")
             params.append(level.capitalize())
@@ -623,9 +627,7 @@ def add_review(course_id):
     conn.close()
     return redirect(url_for('course_detail', course_id=course_id))
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
-
+# admin routes and server startup are defined after all routes
 @app.route('/admin/review/delete/<int:review_id>')
 def delete_review(review_id):
     if 'admin' not in session:
@@ -644,6 +646,7 @@ def delete_review(review_id):
 # ADMIN ROUTES
 # ─────────────────────────────────────────────
 
+
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
@@ -654,7 +657,7 @@ def admin():
             return redirect('/admin/dashboard')
         else:
             return "Wrong login"
-    return render_template('admin_loginn.html')
+    return render_template('admin_login.html')
 
 @app.route('/admin/add', methods=['POST'])
 def add_course():
@@ -667,11 +670,12 @@ def add_course():
     icon        = request.form.get('icon', '📚')
     bg_gradient = request.form.get('bg_gradient', '')
     badge_type  = request.form.get('badge_type', 'Free')
+    duration    = request.form.get('duration', '')
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO courses (title, platform, link, tags, icon, bg_gradient, badge_type) VALUES (%s,%s,%s,%s,%s,%s,%s)",
-        (title, platform, link, tags, icon, bg_gradient, badge_type)
+        "INSERT INTO courses (title, platform, link, tags, icon, bg_gradient, badge_type, duration) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+        (title, platform, link, tags, icon, bg_gradient, badge_type, duration)
     )
     conn.commit()
     cursor.close()
@@ -689,9 +693,10 @@ def edit_course(id):
         platform = request.form['platform']
         link     = request.form['link']
         tags     = request.form.get('tags', '')
+        duration = request.form.get('duration', '')
         cursor.execute(
-            "UPDATE courses SET title=%s, platform=%s, link=%s, tags=%s WHERE id=%s",
-            (title, platform, link, tags, id)
+            "UPDATE courses SET title=%s, platform=%s, link=%s, tags=%s, duration=%s WHERE id=%s",
+            (title, platform, link, tags, duration, id)
         )
         conn.commit()
         cursor.close()
